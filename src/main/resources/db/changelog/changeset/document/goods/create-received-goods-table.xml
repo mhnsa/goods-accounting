@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+
+
+    <changeSet id="received_product_seq.sequence.create" author="mkhalikov">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <sequenceExists sequenceName="received_product_seq" schemaName="goods_accounting"/>
+            </not>
+        </preConditions>
+        <createSequence schemaName="goods_accounting" sequenceName="received_product_seq" dataType="bigint"/>
+        <rollback>
+            <dropSequence schemaName="goods_accounting" sequenceName="received_product_seq"/>
+        </rollback>
+    </changeSet>
+
+
+    <changeSet id="received_product.table.create" author="mkhalikov">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="received_product" schemaName="goods_accounting"/>
+            </not>
+        </preConditions>
+        <createTable tableName="received_product" schemaName="goods_accounting" remarks="Информация о поступившем товаре">
+            <column name="id" type="bigint" remarks="Идентификатор"
+                    defaultValueComputed="nextval('goods_accounting.received_product_seq')">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="article" type="varchar" remarks="Артикул"/>
+            <column name="name" type="varchar" remarks="Наименование"/>
+            <column name="purchase_price" type="decimal(19,2)" remarks="Цена закупки"/>
+            <column name="quantity" type="integer" remarks="Количество" />
+            <column name="receipt_document_id" type="integer" remarks="Идентификатор документа о поступлении">
+                <constraints nullable="false" foreignKeyName="fk_received_product_received_document_id"
+                             referencedTableSchemaName="goods_accounting" referencedTableName="received_document"
+                             referencedColumnNames="id"/>
+            </column>
+
+            <column name="created_dttm" type="datetime" remarks="Время создания записи">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_dttm" type="datetime" remarks="Время изменения записи">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="received_product" schemaName="goods_accounting"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

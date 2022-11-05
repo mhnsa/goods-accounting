@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+
+
+    <changeSet id="flatography.table.create" author="elibragimova">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="flatography" schemaName="lkau"/>
+            </not>
+        </preConditions>
+        <createTable tableName="flatography" schemaName="lkau" remarks="Квартирография">
+            <column name="id" type="bigint" remarks="Идентификатор помещения">
+                <constraints primaryKey="true" foreignKeyName="fk_flatography_building_object_id"
+                             referencedTableSchemaName="lkau" referencedTableName="building_object"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="flatography_status_id" type="integer" remarks="Статус квартирографии">
+                <constraints nullable="false" foreignKeyName="fk_flatography_flatography_status_id"
+                             referencedTableSchemaName="lkau" referencedTableName="flatography_status"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="flatography_version" type="integer" remarks="Версия квартирографии">
+                <constraints nullable="false"/>
+            </column>
+            <column name="fund_comment" type="varchar" remarks="Комментарий Фонда"/>
+            <column name="correction" type="varchar" remarks="Обоснование корректировки"/>
+            <column name="created_dttm" type="datetime" remarks="Время создания записи">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_dttm" type="datetime" remarks="Время изменения записи">
+                <constraints nullable="false"/>
+            </column>
+            <column name="deleted_dttm" type="datetime" remarks="Время удаления записи"/>
+        </createTable>
+        <rollback>
+            <dropTable tableName="flatography" schemaName="lkau"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="flatography.flatography_status_id.index.create" author="elibragimova">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <indexExists schemaName="lkau" indexName="idx_flatography_flatography_status_id"
+                             tableName="flatography"/>
+            </not>
+        </preConditions>
+        <createIndex schemaName="lkau" tableName="flatography"
+                     indexName="idx_flatography_flatography_status_id"
+                     unique="false">
+            <column name="flatography_status_id"/>
+        </createIndex>
+        <rollback>
+            <dropIndex tableName="flatography" schemaName="lkau"
+                       indexName="idx_flatography_flatography_status_id"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="flatography.updated_dttm.index.create" author="rakovsv">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <indexExists schemaName="lkau" tableName="flatography"
+                             indexName="idx_flatography_updated_dttm"/>
+            </not>
+            <columnExists schemaName="lkau" tableName="flatography" columnName="updated_dttm"/>
+        </preConditions>
+        <createIndex schemaName="lkau" tableName="flatography"
+                     indexName="idx_flatography_updated_dttm"
+                     unique="false">
+            <column name="updated_dttm"/>
+        </createIndex>
+        <rollback>
+            <dropIndex schemaName="lkau" tableName="flatography"
+                       indexName="idx_flatography_updated_dttm"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="flatography.column.flatography_status_id.rename-column" author="azaripov">
+        <preConditions onFail="MARK_RAN">
+            <columnExists schemaName="lkau" tableName="flatography"
+                          columnName="flatography_status_id"/>
+        </preConditions>
+        <renameColumn schemaName="lkau" tableName="flatography" oldColumnName="flatography_status_id"
+                      newColumnName="status_id"/>
+        <rollback>
+            <renameColumn schemaName="lkau" tableName="flatography"
+                          oldColumnName="status_id"
+                          newColumnName="flatography_status_id"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="flatography.column.flatography_version.rename-column" author="azaripov">
+        <preConditions onFail="MARK_RAN">
+            <columnExists schemaName="lkau" tableName="flatography"
+                          columnName="flatography_version"/>
+        </preConditions>
+        <renameColumn schemaName="lkau" tableName="flatography" oldColumnName="flatography_version"
+                      newColumnName="version"/>
+        <rollback>
+            <renameColumn schemaName="lkau" tableName="flatography"
+                          oldColumnName="version"
+                          newColumnName="flatography_version"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="idx_flatography_flatography_status_id.rename-index" author="terentev" dbms="postgresql">
+        <preConditions onFail="MARK_RAN">
+            <indexExists schemaName="lkau" indexName="idx_flatography_flatography_status_id"/>
+        </preConditions>
+        <sql>ALTER INDEX lkau.idx_flatography_flatography_status_id RENAME TO idx_flatography_status_id</sql>
+        <rollback>
+            <sql>ALTER INDEX lkau.idx_flatography_status_id RENAME TO idx_flatography_flatography_status_id</sql>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

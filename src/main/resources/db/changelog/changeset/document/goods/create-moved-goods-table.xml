@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+
+
+    <changeSet id="movement_goods_seq.sequence.create" author="mkhalikov">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <sequenceExists sequenceName="movement_goods_seq" schemaName="goods_accounting"/>
+            </not>
+        </preConditions>
+        <createSequence schemaName="goods_accounting" sequenceName="movement_goods_seq" dataType="bigint"/>
+        <rollback>
+            <dropSequence schemaName="goods_accounting" sequenceName="movement_goods_seq"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="movement_goods.table.create" author="mkhalikov">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="movement_goods" schemaName="goods_accounting"/>
+            </not>
+        </preConditions>
+        <createTable tableName="movement_goods" schemaName="goods_accounting" remarks="Информация о проданных товарах">
+            <column name="id" type="bigint" remarks="Идентификатор"
+                    defaultValueComputed="nextval('goods_accounting.movement_goods_seq')">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="article" type="varchar" remarks="Артикул"/>
+            <column name="name" type="varchar" remarks="Наименование"/>
+            <column name="sale_price" type="decimal(19,2)" remarks="Цена продажи"/>
+            <column name="quantity" type="integer" remarks="Количество" />
+            <column name="sale_document_id" type="integer" remarks="Идентификатор документа о продаже">
+                <constraints nullable="false" foreignKeyName="fk_movement_goods_sale_document_id"
+                             referencedTableSchemaName="goods_accounting" referencedTableName="movement_document"
+                             referencedColumnNames="id"/>
+            </column>
+
+            <column name="created_dttm" type="datetime" remarks="Время создания записи">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_dttm" type="datetime" remarks="Время изменения записи">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="movement_goods" schemaName="goods_accounting"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

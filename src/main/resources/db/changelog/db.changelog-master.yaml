@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/changeset/create-goods-accounting-schema.xml
+  - include:
+      file: db/changelog/changeset/create-warehouse-table.xml
+  - include:
+      file: db/changelog/changeset/create-product-table.xml
+  - include:
+      file: db/changelog/changeset/document/create-movement-document-table.xml
+  - include:
+      file: db/changelog/changeset/document/create-receipt-document-table.xml
+  - include:
+      file: db/changelog/changeset/document/create-sale-document-table.xml
+  - include:
+      file: db/changelog/changeset/document/goods/create-received-goods-table.xml
+  - include:
+      file: db/changelog/changeset/document/goods/create-sold-goods-table.xml
+  - include:
+      file: db/changelog/changeset/document/goods/create-moved-goods-table.xml
