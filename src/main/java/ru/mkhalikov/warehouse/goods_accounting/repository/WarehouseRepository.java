@@ -4,6 +4,11 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import ru.mkhalikov.warehouse.goods_accounting.model.Warehouse;
 
+import java.util.List;
+
 @Repository
 public interface WarehouseRepository extends CrudRepository<Warehouse, Integer> {
+
+    @Override
+    List<Warehouse> findAll();
 }

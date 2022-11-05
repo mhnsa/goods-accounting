@@ -16,7 +16,7 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Warehouse extends BaseEntity<Integer> {
+public class Warehouse extends BaseEntity<Long> {
 
     @Id
     @SequenceGenerator(name = "warehouse_seq", sequenceName = "goods_accounting.warehouse_seq", allocationSize = 1)

@@ -8,6 +8,9 @@ import ru.mkhalikov.warehouse.goods_accounting.model.Warehouse;
 import ru.mkhalikov.warehouse.goods_accounting.repository.WarehouseRepository;
 import ru.mkhalikov.warehouse.goods_accounting.service.WarehouseService;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class WarehouseServiceImpl implements WarehouseService {
@@ -33,6 +36,39 @@ public class WarehouseServiceImpl implements WarehouseService {
                 .orElseThrow(() -> new NotFoundException(String.format("Warehouse with id %s not found", id)));
         return WarehouseDTO.builder()
                 .name(warehouse.getName())
+                .createdDttm(warehouse.getCreatedDttm())
+                .updatedDttm(warehouse.getUpdatedDttm())
+                .build();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<WarehouseDTO> getAll() {
+        return warehouseRepository.findAll().stream()
+                .map(this::getWarehouseDTOFromWarehouseEntity)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deleteById(Integer id) {
+        var warehouse = warehouseRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(String.format("Warehouse with id %s not found", id)));
+        if (warehouse != null) {
+            warehouseRepository.deleteById(id);
+        }
+    }
+
+    private WarehouseDTO getWarehouseDTOFromWarehouseEntity(Warehouse warehouse) {
+        return WarehouseDTO.builder()
+                .id(warehouse.getId())
+                .name(warehouse.getName())
+                .createdDttm(warehouse.getCreatedDttm())
+                .updatedDttm(warehouse.getUpdatedDttm())
                 .build();
     }
 }
