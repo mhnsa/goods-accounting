@@ -1,15 +1,17 @@
-package ru.mkhalikov.warehouse.goods_accounting.model;
+package ru.mkhalikov.warehouse.goods_accounting.model.document.goods;
 
 import lombok.*;
+import ru.mkhalikov.warehouse.goods_accounting.model.BaseEntity;
+import ru.mkhalikov.warehouse.goods_accounting.model.document.ReceiptDocument;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 
 /**
- * Поступивший товар
+ * Поступившие товары
  */
 @Entity
-@Table(name = "received_product")
+@Table(name = "received_goods")
 @Getter
 @Setter
 @Builder
@@ -18,7 +20,7 @@ import java.math.BigDecimal;
 public class ReceivedGoods extends BaseEntity<Integer> {
 
     @Id
-    @SequenceGenerator(name = "received_product_seq", sequenceName = "goods_accounting.received_product_seq", allocationSize = 1)
+    @SequenceGenerator(name = "received_goods_seq", sequenceName = "goods_accounting.received_goods_seq", allocationSize = 1)
     @Column(name = "id")
     private Integer id;
 

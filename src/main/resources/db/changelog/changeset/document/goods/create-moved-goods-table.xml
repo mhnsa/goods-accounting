@@ -6,35 +6,34 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
 
 
-    <changeSet id="movement_goods_seq.sequence.create" author="mkhalikov">
+    <changeSet id="moved_goods_seq.sequence.create" author="mkhalikov">
         <preConditions onFail="MARK_RAN">
             <not>
-                <sequenceExists sequenceName="movement_goods_seq" schemaName="goods_accounting"/>
+                <sequenceExists sequenceName="moved_goods_seq" schemaName="goods_accounting"/>
             </not>
         </preConditions>
-        <createSequence schemaName="goods_accounting" sequenceName="movement_goods_seq" dataType="bigint"/>
+        <createSequence schemaName="goods_accounting" sequenceName="moved_goods_seq" dataType="bigint"/>
         <rollback>
-            <dropSequence schemaName="goods_accounting" sequenceName="movement_goods_seq"/>
+            <dropSequence schemaName="goods_accounting" sequenceName="moved_goods_seq"/>
         </rollback>
     </changeSet>
 
-    <changeSet id="movement_goods.table.create" author="mkhalikov">
+    <changeSet id="moved_goods.table.create" author="mkhalikov">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="movement_goods" schemaName="goods_accounting"/>
+                <tableExists tableName="moved_goods" schemaName="goods_accounting"/>
             </not>
         </preConditions>
-        <createTable tableName="movement_goods" schemaName="goods_accounting" remarks="Информация о проданных товарах">
+        <createTable tableName="moved_goods" schemaName="goods_accounting" remarks="Информация о проданных товарах">
             <column name="id" type="bigint" remarks="Идентификатор"
-                    defaultValueComputed="nextval('goods_accounting.movement_goods_seq')">
+                    defaultValueComputed="nextval('goods_accounting.moved_goods_seq')">
                 <constraints primaryKey="true"/>
             </column>
             <column name="article" type="varchar" remarks="Артикул"/>
             <column name="name" type="varchar" remarks="Наименование"/>
-            <column name="sale_price" type="decimal(19,2)" remarks="Цена продажи"/>
             <column name="quantity" type="integer" remarks="Количество" />
-            <column name="sale_document_id" type="integer" remarks="Идентификатор документа о продаже">
-                <constraints nullable="false" foreignKeyName="fk_movement_goods_sale_document_id"
+            <column name="movement_document_id" type="integer" remarks="Идентификатор документа о перемещении">
+                <constraints nullable="false" foreignKeyName="fk_moved_goods_movement_document_id"
                              referencedTableSchemaName="goods_accounting" referencedTableName="movement_document"
                              referencedColumnNames="id"/>
             </column>
@@ -47,7 +46,7 @@
             </column>
         </createTable>
         <rollback>
-            <dropTable tableName="movement_goods" schemaName="goods_accounting"/>
+            <dropTable tableName="moved_goods" schemaName="goods_accounting"/>
         </rollback>
     </changeSet>
 

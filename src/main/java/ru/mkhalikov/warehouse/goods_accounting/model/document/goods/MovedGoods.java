@@ -1,11 +1,12 @@
-package ru.mkhalikov.warehouse.goods_accounting.model;
+package ru.mkhalikov.warehouse.goods_accounting.model.document.goods;
 
 import lombok.*;
+import ru.mkhalikov.warehouse.goods_accounting.model.document.MovementDocument;
 
 import javax.persistence.*;
 
 /**
- * Перемещенный товар
+ * Перемещенные товары
  */
 @Entity
 @Table(name = "moved_goods")

@@ -1,4 +1,4 @@
 FROM openjdk:17-jdk-slim
-ARG JAR_FILE=*.jar
-COPY ${JAR_FILE} application.jar
-ENTRYPOINT ["java", "-jar", "application.jar"]
+ADD target/goods-accounting.jar goods-accounting.jar
+ENTRYPOINT ["java", "-jar", "goods-accounting.jar"]
+EXPOSE 8080

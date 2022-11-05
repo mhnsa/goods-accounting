@@ -6,31 +6,41 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
 
 
-    <changeSet id="warehouse_seq.sequence.create" author="mkhalikov">
+    <changeSet id="product_seq.sequence.create" author="mkhalikov">
         <preConditions onFail="MARK_RAN">
             <not>
-                <sequenceExists sequenceName="warehouse_seq" schemaName="goods_accounting"/>
+                <sequenceExists sequenceName="product_seq" schemaName="goods_accounting"/>
             </not>
         </preConditions>
-        <createSequence schemaName="goods_accounting" sequenceName="warehouse_seq" dataType="bigint"/>
+        <createSequence schemaName="goods_accounting" sequenceName="product_seq" dataType="bigint"/>
         <rollback>
-            <dropSequence schemaName="goods_accounting" sequenceName="warehouse_seq"/>
+            <dropSequence schemaName="goods_accounting" sequenceName="product_seq"/>
         </rollback>
     </changeSet>
 
 
-    <changeSet id="warehouse.table.create" author="mkhalikov">
+    <changeSet id="product.table.create" author="mkhalikov">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="warehouse" schemaName="goods_accounting"/>
+                <tableExists tableName="product" schemaName="goods_accounting"/>
             </not>
         </preConditions>
-        <createTable tableName="warehouse" schemaName="goods_accounting" remarks="Информация о складе">
+        <createTable tableName="product" schemaName="goods_accounting" remarks="Информация о товаре">
             <column name="id" type="bigint" remarks="Идентификатор"
-                    defaultValueComputed="nextval('goods_accounting.warehouse_seq')">
+                    defaultValueComputed="nextval('goods_accounting.product_seq')">
                 <constraints primaryKey="true"/>
             </column>
             <column name="name" type="varchar" remarks="Наименование"/>
+            <column name="article" type="varchar" remarks="Артикул"/>
+            <column name="last_purchase_price" type="decimal(19,2)" remarks="Цена последней закупки"/>
+            <column name="last_sale_price" type="decimal(19,2)" remarks="Цена последней продажи"/>
+            <column name="quantity" type="integer" remarks="Количество товара на складе" />
+            <column name="warehouse_id" type="integer" remarks="Идентификатор склада">
+                <constraints nullable="false" foreignKeyName="fk_product_warehouse"
+                             referencedTableSchemaName="goods_accounting" referencedTableName="warehouse"
+                             referencedColumnNames="id"/>
+            </column>
+
             <column name="created_dttm" type="datetime" remarks="Время создания записи">
                 <constraints nullable="false"/>
             </column>
@@ -39,7 +49,7 @@
             </column>
         </createTable>
         <rollback>
-            <dropTable tableName="warehouse" schemaName="goods_accounting"/>
+            <dropTable tableName="product" schemaName="goods_accounting"/>
         </rollback>
     </changeSet>
 

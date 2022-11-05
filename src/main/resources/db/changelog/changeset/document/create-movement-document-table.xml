@@ -6,32 +6,39 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
 
 
-    <changeSet id="receipt_document_seq.sequence.create" author="mkhalikov">
+    <changeSet id="movement_document_seq.sequence.create" author="mkhalikov">
         <preConditions onFail="MARK_RAN">
             <not>
-                <sequenceExists sequenceName="receipt_document_seq" schemaName="goods_accounting"/>
+                <sequenceExists sequenceName="movement_document_seq" schemaName="goods_accounting"/>
             </not>
         </preConditions>
-        <createSequence schemaName="goods_accounting" sequenceName="receipt_document_seq" dataType="bigint"/>
+        <createSequence schemaName="goods_accounting" sequenceName="movement_document_seq" dataType="bigint"/>
         <rollback>
-            <dropSequence schemaName="goods_accounting" sequenceName="receipt_document_seq"/>
+            <dropSequence schemaName="goods_accounting" sequenceName="movement_document_seq"/>
         </rollback>
     </changeSet>
 
-    <changeSet id="receipt_document.table.create" author="mkhalikov">
+    <changeSet id="movement_document.table.create" author="mkhalikov">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="receipt_document" schemaName="goods_accounting"/>
+                <tableExists tableName="movement_document" schemaName="goods_accounting"/>
             </not>
         </preConditions>
-        <createTable tableName="receipt_document" schemaName="goods_accounting" remarks="Накладная о поступлении товаров">
+        <createTable tableName="movement_document" schemaName="goods_accounting" remarks="Накладная о перемещении товаров">
             <column name="id" type="bigint" remarks="Идентификатор"
-                    defaultValueComputed="nextval('goods_accounting.receipt_document_seq')">
+                    defaultValueComputed="nextval('goods_accounting.movement_document_seq')">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="receipt_number" type="varchar" remarks="Номер поступления"/>
+            <column name="movement_number" type="varchar" remarks="Номер документа о перемещении товаров"/>
+
+            <column name="source_warehouse_id" type="integer" remarks="Идентификатор склада источника">
+                <constraints nullable="false" foreignKeyName="fk_movement_document_source_warehouse_id"
+                             referencedTableSchemaName="goods_accounting" referencedTableName="warehouse"
+                             referencedColumnNames="id"/>
+            </column>
+
             <column name="destination_warehouse_id" type="integer" remarks="Идентификатор склада назначения">
-                <constraints nullable="false" foreignKeyName="fk_receipt_document_destination_warehouse_id"
+                <constraints nullable="false" foreignKeyName="fk_movement_document_destination_warehouse_id"
                              referencedTableSchemaName="goods_accounting" referencedTableName="warehouse"
                              referencedColumnNames="id"/>
             </column>
@@ -44,7 +51,7 @@
             </column>
         </createTable>
         <rollback>
-            <dropTable tableName="receipt_document" schemaName="goods_accounting"/>
+            <dropTable tableName="movement_document" schemaName="goods_accounting"/>
         </rollback>
     </changeSet>
 

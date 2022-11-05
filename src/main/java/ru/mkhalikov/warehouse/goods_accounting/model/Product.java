@@ -1,12 +1,15 @@
-package ru.mkhalikov.warehouse.goods_accounting.controller;
+package ru.mkhalikov.warehouse.goods_accounting.model;
 
 import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 
+/**
+ * Товар на складе
+ */
 @Entity
-@Table(schema = "warehouse")
+@Table
 @Getter
 @Setter
 @Builder
@@ -15,8 +18,9 @@ import java.math.BigDecimal;
 public class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    @SequenceGenerator(name = "product_seq", sequenceName = "goods_accounting.product_seq", allocationSize = 1)
+    @Column(name = "id")
+    private Integer id;
 
     @Column(name = "article")
     private String article;
@@ -29,5 +33,12 @@ public class Product {
 
     @Column(name = "last_sale_price")
     private BigDecimal lastSalePrice;
+
+    @ManyToOne
+    @JoinColumn(name = "warehouse_id", foreignKey = @ForeignKey(name = "fk_product_warehouse"))
+    private Warehouse warehouse;
+
+    @Column(name = "quantity")
+    private Integer quantity;
 
 }

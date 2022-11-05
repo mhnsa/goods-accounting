@@ -1,7 +1,9 @@
-package ru.mkhalikov.warehouse.goods_accounting.model;
+package ru.mkhalikov.warehouse.goods_accounting.model.document;
 
 
 import lombok.*;
+import ru.mkhalikov.warehouse.goods_accounting.model.document.goods.SoldGoods;
+import ru.mkhalikov.warehouse.goods_accounting.model.Warehouse;
 
 import javax.persistence.*;
 import java.util.Set;

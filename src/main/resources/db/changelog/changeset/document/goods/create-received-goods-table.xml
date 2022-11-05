@@ -6,28 +6,28 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
 
 
-    <changeSet id="received_product_seq.sequence.create" author="mkhalikov">
+    <changeSet id="received_goods_seq.sequence.create" author="mkhalikov">
         <preConditions onFail="MARK_RAN">
             <not>
-                <sequenceExists sequenceName="received_product_seq" schemaName="goods_accounting"/>
+                <sequenceExists sequenceName="received_goods_seq" schemaName="goods_accounting"/>
             </not>
         </preConditions>
-        <createSequence schemaName="goods_accounting" sequenceName="received_product_seq" dataType="bigint"/>
+        <createSequence schemaName="goods_accounting" sequenceName="received_goods_seq" dataType="bigint"/>
         <rollback>
-            <dropSequence schemaName="goods_accounting" sequenceName="received_product_seq"/>
+            <dropSequence schemaName="goods_accounting" sequenceName="received_goods_seq"/>
         </rollback>
     </changeSet>
 
 
-    <changeSet id="received_product.table.create" author="mkhalikov">
+    <changeSet id="received_goods.table.create" author="mkhalikov">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="received_product" schemaName="goods_accounting"/>
+                <tableExists tableName="received_goods" schemaName="goods_accounting"/>
             </not>
         </preConditions>
-        <createTable tableName="received_product" schemaName="goods_accounting" remarks="Информация о поступившем товаре">
+        <createTable tableName="received_goods" schemaName="goods_accounting" remarks="Информация о поступивших товарах">
             <column name="id" type="bigint" remarks="Идентификатор"
-                    defaultValueComputed="nextval('goods_accounting.received_product_seq')">
+                    defaultValueComputed="nextval('goods_accounting.received_goods_seq')">
                 <constraints primaryKey="true"/>
             </column>
             <column name="article" type="varchar" remarks="Артикул"/>
@@ -35,8 +35,8 @@
             <column name="purchase_price" type="decimal(19,2)" remarks="Цена закупки"/>
             <column name="quantity" type="integer" remarks="Количество" />
             <column name="receipt_document_id" type="integer" remarks="Идентификатор документа о поступлении">
-                <constraints nullable="false" foreignKeyName="fk_received_product_received_document_id"
-                             referencedTableSchemaName="goods_accounting" referencedTableName="received_document"
+                <constraints nullable="false" foreignKeyName="fk_received_goods_receipt_document_id"
+                             referencedTableSchemaName="goods_accounting" referencedTableName="receipt_document"
                              referencedColumnNames="id"/>
             </column>
 
@@ -48,7 +48,7 @@
             </column>
         </createTable>
         <rollback>
-            <dropTable tableName="received_product" schemaName="goods_accounting"/>
+            <dropTable tableName="received_goods" schemaName="goods_accounting"/>
         </rollback>
     </changeSet>
 

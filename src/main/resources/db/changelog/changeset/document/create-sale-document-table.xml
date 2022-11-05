@@ -18,7 +18,6 @@
         </rollback>
     </changeSet>
 
-
     <changeSet id="sale_document.table.create" author="mkhalikov">
         <preConditions onFail="MARK_RAN">
             <not>
@@ -32,7 +31,7 @@
             </column>
             <column name="sale_number" type="varchar" remarks="Номер продажи"/>
             <column name="source_warehouse_id" type="integer" remarks="Идентификатор склада источника">
-                <constraints nullable="false" foreignKeyName="fk_sale_document_warehouse_source_warehouse_id"
+                <constraints nullable="false" foreignKeyName="fk_sale_document_source_warehouse_id"
                              referencedTableSchemaName="goods_accounting" referencedTableName="warehouse"
                              referencedColumnNames="id"/>
             </column>
@@ -45,7 +44,7 @@
             </column>
         </createTable>
         <rollback>
-            <dropTable tableName="receipt_document" schemaName="goods_accounting"/>
+            <dropTable tableName="sale_document" schemaName="goods_accounting"/>
         </rollback>
     </changeSet>
 

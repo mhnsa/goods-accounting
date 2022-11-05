@@ -6,37 +6,36 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
 
 
-    <changeSet id="soled_goods_seq.sequence.create" author="mkhalikov">
+    <changeSet id="sold_goods_seq.sequence.create" author="mkhalikov">
         <preConditions onFail="MARK_RAN">
             <not>
-                <sequenceExists sequenceName="soled_goods_seq" schemaName="goods_accounting"/>
+                <sequenceExists sequenceName="sold_goods_seq" schemaName="goods_accounting"/>
             </not>
         </preConditions>
-        <createSequence schemaName="goods_accounting" sequenceName="soled_goods_seq" dataType="bigint"/>
+        <createSequence schemaName="goods_accounting" sequenceName="sold_goods_seq" dataType="bigint"/>
         <rollback>
-            <dropSequence schemaName="goods_accounting" sequenceName="soled_goods_seq"/>
+            <dropSequence schemaName="goods_accounting" sequenceName="sold_goods_seq"/>
         </rollback>
     </changeSet>
 
-
-    <changeSet id="soled_goods.table.create" author="mkhalikov">
+    <changeSet id="sold_goods.table.create" author="mkhalikov">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="soled_goods" schemaName="goods_accounting"/>
+                <tableExists tableName="sold_goods" schemaName="goods_accounting"/>
             </not>
         </preConditions>
-        <createTable tableName="soled_goods" schemaName="goods_accounting" remarks="Информация о поступивших товарах">
+        <createTable tableName="sold_goods" schemaName="goods_accounting" remarks="Информация о проданных товарах">
             <column name="id" type="bigint" remarks="Идентификатор"
-                    defaultValueComputed="nextval('goods_accounting.soled_goods_seq')">
+                    defaultValueComputed="nextval('goods_accounting.sold_goods_seq')">
                 <constraints primaryKey="true"/>
             </column>
             <column name="article" type="varchar" remarks="Артикул"/>
             <column name="name" type="varchar" remarks="Наименование"/>
-            <column name="purchase_price" type="decimal(19,2)" remarks="Цена закупки"/>
+            <column name="sale_price" type="decimal(19,2)" remarks="Цена продажи"/>
             <column name="quantity" type="integer" remarks="Количество" />
-            <column name="receipt_document_id" type="integer" remarks="Идентификатор документа о поступлении">
-                <constraints nullable="false" foreignKeyName="fk_soled_goods_soled_document_id"
-                             referencedTableSchemaName="goods_accounting" referencedTableName="soled_document"
+            <column name="sale_document_id" type="integer" remarks="Идентификатор документа о продаже">
+                <constraints nullable="false" foreignKeyName="fk_sold_goods_sale_document_id"
+                             referencedTableSchemaName="goods_accounting" referencedTableName="sale_document"
                              referencedColumnNames="id"/>
             </column>
 
@@ -48,7 +47,7 @@
             </column>
         </createTable>
         <rollback>
-            <dropTable tableName="soled_goods" schemaName="goods_accounting"/>
+            <dropTable tableName="sold_goods" schemaName="goods_accounting"/>
         </rollback>
     </changeSet>
 

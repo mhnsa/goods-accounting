@@ -1,6 +1,7 @@
-package ru.mkhalikov.warehouse.goods_accounting.model;
+package ru.mkhalikov.warehouse.goods_accounting.model.document.goods;
 
 import lombok.*;
+import ru.mkhalikov.warehouse.goods_accounting.model.document.SaleDocument;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -9,7 +10,7 @@ import java.math.BigDecimal;
  * Проданный товар
  */
 @Entity
-@Table
+@Table(name = "sold_goods")
 @Getter
 @Setter
 @Builder
