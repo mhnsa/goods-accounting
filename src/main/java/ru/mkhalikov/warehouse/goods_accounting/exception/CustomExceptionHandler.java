@@ -24,6 +24,13 @@ public class CustomExceptionHandler {
         return new NotFoundResponseError(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(IncorrectDataException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public IncorrectDataResponseError handle(IncorrectDataException ex) {
+        log.error(ex.getMessage(), ex);
+        return new IncorrectDataResponseError(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody

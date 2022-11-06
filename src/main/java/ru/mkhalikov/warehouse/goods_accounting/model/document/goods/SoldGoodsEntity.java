@@ -1,6 +1,7 @@
 package ru.mkhalikov.warehouse.goods_accounting.model.document.goods;
 
 import lombok.*;
+import ru.mkhalikov.warehouse.goods_accounting.model.BaseEntity;
 import ru.mkhalikov.warehouse.goods_accounting.model.document.SaleDocument;
 
 import javax.persistence.*;
@@ -10,16 +11,18 @@ import java.math.BigDecimal;
  * Проданный товар
  */
 @Entity
-@Table(name = "sold_goods")
+@Table(schema = "goods_accounting", name = "sold_goods")
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SoldGoodsEntity {
+public class SoldGoodsEntity extends BaseEntity<Integer> {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "sold_goods_seq", sequenceName = "goods_accounting.sold_goods_seq", allocationSize = 1)
+    @GeneratedValue(generator = "sold_goods_seq")
+    @Column(name = "id")
     private long id;
 
     @Column(name = "article")

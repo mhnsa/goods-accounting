@@ -11,23 +11,23 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
- * Документ о поступлении товаров
+ * Документ о продаже товаров
  */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReceiptDocumentRequestDTO {
+public class SaleDocumentRequestDTO {
 
     @NotNull
     @Schema(title = "Номер документа")
-    private String receiptNumber;
+    private String saleNumber;
 
     @NotNull
-    @Schema(title = "Идентификатор склада назначения")
-    private Integer destinationWarehouseId;
+    @Schema(title = "Идентификатор склада источника")
+    private Integer sourceWarehouseId;
 
-    @Schema(title = "Перечень посутпивших товаров")
+    @Schema(title = "Перечень проданных товаров")
     @Valid
-    private List<ReceiveGoodsRequestDTO> receiveGoodsRequestDTOList;
+    private List<SoldGoodsRequestDTO> soldGoodsRequestDTOList;
 }

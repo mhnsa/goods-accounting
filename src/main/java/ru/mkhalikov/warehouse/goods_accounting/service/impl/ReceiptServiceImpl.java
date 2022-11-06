@@ -2,8 +2,9 @@ package ru.mkhalikov.warehouse.goods_accounting.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.mkhalikov.warehouse.goods_accounting.dto.request.ReceiptDocumentRequestDTO;
-import ru.mkhalikov.warehouse.goods_accounting.dto.ReceiveGoodsDTO;
+import ru.mkhalikov.warehouse.goods_accounting.dto.request.ReceiveGoodsRequestDTO;
 import ru.mkhalikov.warehouse.goods_accounting.model.ProductEntity;
 import ru.mkhalikov.warehouse.goods_accounting.model.document.ReceiptDocument;
 import ru.mkhalikov.warehouse.goods_accounting.model.document.goods.ReceivedGoodsEntity;
@@ -24,26 +25,26 @@ public class ReceiptServiceImpl implements ReceiptService {
     private final ProductRepository productRepository;
 
     @Override
+    @Transactional
     public void processReceipt(ReceiptDocumentRequestDTO receiptDocumentRequestDTO) {
 
         var destinationWarehouse = warehouseService.getEntityById(receiptDocumentRequestDTO.getDestinationWarehouseId());
-        var receiveGoodsDTOList = receiptDocumentRequestDTO.getReceiveGoodsDTOList();
+        var receiveGoodsDTOList = receiptDocumentRequestDTO.getReceiveGoodsRequestDTOList();
 
-        receiveGoodsDTOList.forEach(receiveGoodsDTO -> {
-            var productEntity = productRepository.findByArticleAndWarehouse(receiveGoodsDTO.getArticle(),
-                    destinationWarehouse);
+        receiveGoodsDTOList.forEach(receiveGoodsRequestDTO -> {
+            var productEntity = productRepository.findByArticleAndWarehouse(receiveGoodsRequestDTO.getArticle(),
+                    destinationWarehouse).orElse(new ProductEntity());
 
-            if (productEntity == null) {
-                productEntity = new ProductEntity();
-                productEntity.setName(receiveGoodsDTO.getName());
-                productEntity.setQuantity(receiveGoodsDTO.getQuantity());
-                productEntity.setArticle(receiveGoodsDTO.getArticle());
+            if (productEntity.getId() == null) {
+                productEntity.setName(receiveGoodsRequestDTO.getName());
+                productEntity.setQuantity(receiveGoodsRequestDTO.getQuantity());
+                productEntity.setArticle(receiveGoodsRequestDTO.getArticle());
                 productEntity.setWarehouse(destinationWarehouse);
             } else {
-                var newQuantity = productEntity.getQuantity() + receiveGoodsDTO.getQuantity();
+                var newQuantity = productEntity.getQuantity() + receiveGoodsRequestDTO.getQuantity();
                 productEntity.setQuantity(newQuantity);
             }
-            productEntity.setLastPurchasePrice(receiveGoodsDTO.getPurchasePrice());
+            productEntity.setLastPurchasePrice(receiveGoodsRequestDTO.getPurchasePrice());
             productRepository.save(productEntity);
         });
 
@@ -53,18 +54,18 @@ public class ReceiptServiceImpl implements ReceiptService {
                 .build());
 
         receivedGoodsRepository.saveAll(receiveGoodsDTOList.stream()
-                .map(receiveGoodsDTO -> getReceivedGoodsEntityFromDTO(receiveGoodsDTO, receiptDocument))
+                .map(receiveGoodsRequestDTO -> getReceivedGoodsEntityFromDTO(receiveGoodsRequestDTO, receiptDocument))
                 .collect(Collectors.toList()));
     }
 
 
-    private ReceivedGoodsEntity getReceivedGoodsEntityFromDTO(ReceiveGoodsDTO receiveGoodsDTO, ReceiptDocument receiptDocument) {
+    private ReceivedGoodsEntity getReceivedGoodsEntityFromDTO(ReceiveGoodsRequestDTO receiveGoodsRequestDTO, ReceiptDocument receiptDocument) {
         return ReceivedGoodsEntity.builder()
-                .name(receiveGoodsDTO.getName())
-                .article(receiveGoodsDTO.getArticle())
+                .name(receiveGoodsRequestDTO.getName())
+                .article(receiveGoodsRequestDTO.getArticle())
                 .receiptDocument(receiptDocument)
-                .quantity(receiveGoodsDTO.getQuantity())
-                .purchasePrice(receiveGoodsDTO.getPurchasePrice())
+                .quantity(receiveGoodsRequestDTO.getQuantity())
+                .purchasePrice(receiveGoodsRequestDTO.getPurchasePrice())
                 .build();
     }
 }

@@ -15,5 +15,5 @@ public interface ProductRepository extends CrudRepository<ProductEntity, Integer
     @Override
     List<ProductEntity> findAll();
 
-    ProductEntity findByArticleAndWarehouse(String article, WarehouseEntity warehouse);
+    Optional<ProductEntity> findByArticleAndWarehouse(String article, WarehouseEntity warehouse);
 }
