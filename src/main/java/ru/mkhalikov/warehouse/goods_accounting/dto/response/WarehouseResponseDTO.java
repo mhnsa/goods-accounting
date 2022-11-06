@@ -18,15 +18,15 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class WarehouseResponseDTO {
 
-    @Schema(name = "Идентификатор")
+    @Schema(title = "Идентификатор")
     private Integer id;
 
-    @Schema(name = "Наименование склада")
+    @Schema(title = "Наименование склада")
     private String name;
 
-    @Schema(name = "Время создания записи")
+    @Schema(title = "Время создания записи")
     private LocalDateTime createdDttm;
 
-    @Schema(name = "Время обновления записи")
+    @Schema(title = "Время обновления записи")
     private LocalDateTime updatedDttm;
 }

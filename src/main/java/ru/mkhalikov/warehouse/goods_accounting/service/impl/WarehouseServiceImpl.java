@@ -22,10 +22,10 @@ public class WarehouseServiceImpl implements WarehouseService {
      * {@inheritDoc}
      */
     @Override
-    public Integer addWarehouse(WarehouseRequestDTO warehouseRequestDTO) {
+    public WarehouseResponseDTO addWarehouse(WarehouseRequestDTO warehouseRequestDTO) {
         var warehouse = WarehouseEntity.builder().name(warehouseRequestDTO.getName()).build();
 
-        return warehouseRepository.save(warehouse).getId();
+        return getWarehouseDTOFromWarehouseEntity(warehouseRepository.save(warehouse));
     }
 
     /**
@@ -33,8 +33,7 @@ public class WarehouseServiceImpl implements WarehouseService {
      */
     @Override
     public WarehouseResponseDTO getById(Integer id) {
-        var warehouse = warehouseRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(String.format("Warehouse with id %s not found", id)));
+        var warehouse = getEntityById(id);
         return WarehouseResponseDTO.builder()
                 .name(warehouse.getName())
                 .createdDttm(warehouse.getCreatedDttm())
@@ -62,6 +61,15 @@ public class WarehouseServiceImpl implements WarehouseService {
         if (warehouse != null) {
             warehouseRepository.deleteById(id);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WarehouseEntity getEntityById(Integer id) {
+        return warehouseRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(String.format("Warehouse with id %s not found", id)));
     }
 
     private WarehouseResponseDTO getWarehouseDTOFromWarehouseEntity(WarehouseEntity warehouseEntity) {

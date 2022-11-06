@@ -11,7 +11,7 @@ import java.math.BigDecimal;
  * Поступившие товары
  */
 @Entity
-@Table(name = "received_goods")
+@Table(schema = "goods_accounting", name = "received_goods")
 @Getter
 @Setter
 @Builder
@@ -21,6 +21,7 @@ public class ReceivedGoodsEntity extends BaseEntity<Integer> {
 
     @Id
     @SequenceGenerator(name = "received_goods_seq", sequenceName = "goods_accounting.received_goods_seq", allocationSize = 1)
+    @GeneratedValue(generator = "received_goods_seq")
     @Column(name = "id")
     private Integer id;
 

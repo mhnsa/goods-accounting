@@ -23,13 +23,13 @@ public class WarehouseController {
 
     @Operation(summary = "Добавление склада в базу", tags = "Warehouse")
     @PostMapping
-    public Integer add(@RequestBody @Valid WarehouseRequestDTO warehouseRequestDTO) {
+    public WarehouseResponseDTO add(@RequestBody @Valid WarehouseRequestDTO warehouseRequestDTO) {
         return warehouseService.addWarehouse(warehouseRequestDTO);
     }
 
     @Operation(summary = "Получение информации о складе по идентификатору", tags = "Warehouse")
     @GetMapping("/{id}")
-    public WarehouseResponseDTO getById(@Parameter(name = "id") @Min(0) @PathVariable(name = "id") Integer id) {
+    public WarehouseResponseDTO getById(@Parameter(name = "id") @Min(1) @PathVariable(name = "id") Integer id) {
         return warehouseService.getById(id);
     }
 
@@ -41,7 +41,7 @@ public class WarehouseController {
 
     @Operation(summary = "Удаление информации о складе по идентификатору", tags = "Warehouse")
     @DeleteMapping("/{id}")
-    public void deleteById(@Parameter(name = "id") @Min(0) @PathVariable(name = "id") Integer id) {
+    public void deleteById(@Parameter(name = "id") @Min(1) @PathVariable(name = "id") Integer id) {
         warehouseService.deleteById(id);
     }
 }

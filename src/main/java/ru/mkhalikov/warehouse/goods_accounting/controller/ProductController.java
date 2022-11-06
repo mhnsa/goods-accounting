@@ -27,7 +27,7 @@ public class ProductController {
 
     @Operation(summary = "Добавление записи о товаре в базу", tags = "Product")
     @PostMapping
-    public Integer add(@Valid @RequestBody ProductRequestDTO productRequestDTO, Errors errors) {
+    public Integer add(@Valid @RequestBody ProductRequestDTO productRequestDTO) {
         return productService.addProduct(productRequestDTO);
     }
 

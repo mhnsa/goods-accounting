@@ -2,6 +2,7 @@ package ru.mkhalikov.warehouse.goods_accounting.service;
 
 import ru.mkhalikov.warehouse.goods_accounting.dto.request.WarehouseRequestDTO;
 import ru.mkhalikov.warehouse.goods_accounting.dto.response.WarehouseResponseDTO;
+import ru.mkhalikov.warehouse.goods_accounting.model.WarehouseEntity;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public interface WarehouseService {
      * @param warehouseRequestDTO Модель информации о складе (запрос)
      * @return Идентификатор добавленной записи
      */
-    Integer addWarehouse(WarehouseRequestDTO warehouseRequestDTO);
+    WarehouseResponseDTO addWarehouse(WarehouseRequestDTO warehouseRequestDTO);
 
     /**
      * Получение информации о складе по идентификатору
@@ -38,4 +39,12 @@ public interface WarehouseService {
      * @param id Идентификатор склада
      */
     void deleteById(Integer id);
+
+    /**
+     * Получение сущности склада по идентификатору
+     *
+     * @param id Идентификатор склада
+     * @return Сущность склада
+     */
+    WarehouseEntity getEntityById(Integer id);
 }

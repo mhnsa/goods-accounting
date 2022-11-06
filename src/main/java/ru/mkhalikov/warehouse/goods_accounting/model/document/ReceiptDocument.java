@@ -13,7 +13,7 @@ import java.util.Set;
  * Документ о поступлении товаров
  */
 @Entity
-@Table(name = "receipt_document")
+@Table(schema = "goods_accounting",name = "receipt_document")
 @Getter
 @Setter
 @Builder
@@ -34,7 +34,7 @@ public class ReceiptDocument extends BaseEntity<Integer> {
     @JoinColumn(name = "destination_warehouse_id", foreignKey = @ForeignKey(name = "fk_receipt_document_destination_warehouse_id"))
     private WarehouseEntity destinationWarehouse;
 
-    @OneToMany(mappedBy = "receiptDocument")
+    @OneToMany(mappedBy = "receiptDocument", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ReceivedGoodsEntity> receivedGoodEntities;
 
 }

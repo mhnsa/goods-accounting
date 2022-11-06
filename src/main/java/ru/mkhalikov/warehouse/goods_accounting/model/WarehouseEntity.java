@@ -2,6 +2,7 @@ package ru.mkhalikov.warehouse.goods_accounting.model;
 
 
 import lombok.*;
+import ru.mkhalikov.warehouse.goods_accounting.model.document.ReceiptDocument;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -27,7 +28,9 @@ public class WarehouseEntity extends BaseEntity<Long> {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "warehouse")
+    @OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ProductEntity> products;
 
+    @OneToMany(mappedBy = "destinationWarehouse", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ReceiptDocument> receiptDocuments;
 }
