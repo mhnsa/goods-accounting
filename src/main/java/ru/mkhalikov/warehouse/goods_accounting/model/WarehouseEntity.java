@@ -16,7 +16,7 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Warehouse extends BaseEntity<Long> {
+public class WarehouseEntity extends BaseEntity<Long> {
 
     @Id
     @SequenceGenerator(name = "warehouse_seq", sequenceName = "goods_accounting.warehouse_seq", allocationSize = 1)
@@ -28,6 +28,6 @@ public class Warehouse extends BaseEntity<Long> {
     private String name;
 
     @OneToMany(mappedBy = "warehouse")
-    private Set<Product> products;
+    private Set<ProductEntity> products;
 
 }

@@ -2,8 +2,8 @@ package ru.mkhalikov.warehouse.goods_accounting.model.document;
 
 
 import lombok.*;
-import ru.mkhalikov.warehouse.goods_accounting.model.document.goods.SoldGoods;
-import ru.mkhalikov.warehouse.goods_accounting.model.Warehouse;
+import ru.mkhalikov.warehouse.goods_accounting.model.document.goods.SoldGoodsEntity;
+import ru.mkhalikov.warehouse.goods_accounting.model.WarehouseEntity;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -27,9 +27,9 @@ public class SaleDocument {
     private String saleNumber;
 
     @ManyToOne
-    private Warehouse sourceWarehouse;
+    private WarehouseEntity sourceWarehouse;
 
     @OneToMany(mappedBy = "saleDocument")
-    private Set<SoldGoods> products;
+    private Set<SoldGoodsEntity> products;
 
 }

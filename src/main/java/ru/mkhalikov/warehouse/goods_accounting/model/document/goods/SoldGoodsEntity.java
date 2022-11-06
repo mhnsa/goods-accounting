@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SoldGoods {
+public class SoldGoodsEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

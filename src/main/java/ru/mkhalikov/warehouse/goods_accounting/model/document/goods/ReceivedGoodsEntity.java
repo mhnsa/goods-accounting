@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReceivedGoods extends BaseEntity<Integer> {
+public class ReceivedGoodsEntity extends BaseEntity<Integer> {
 
     @Id
     @SequenceGenerator(name = "received_goods_seq", sequenceName = "goods_accounting.received_goods_seq", allocationSize = 1)

@@ -1,7 +1,7 @@
 package ru.mkhalikov.warehouse.goods_accounting.model.document.goods;
 
 import lombok.*;
-import ru.mkhalikov.warehouse.goods_accounting.model.document.MovementDocument;
+import ru.mkhalikov.warehouse.goods_accounting.model.document.MovementDocumentEntity;
 
 import javax.persistence.*;
 
@@ -15,10 +15,11 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MovedGoods {
+public class MovedGoodsEntity {
 
     @Id
     @SequenceGenerator(name = "moved_goods_seq", sequenceName = "goods_accounting.moved_goods_seq", allocationSize = 1)
+    @GeneratedValue(generator = "moved_goods_seq")
     @Column(name = "id")
     private Integer id;
 
@@ -33,6 +34,6 @@ public class MovedGoods {
 
     @ManyToOne
     @JoinColumn(name = "movement_document_id", referencedColumnName = "id")
-    private MovementDocument movementDocument;
+    private MovementDocumentEntity movementDocument;
 
 }

@@ -2,8 +2,9 @@ package ru.mkhalikov.warehouse.goods_accounting.model.document;
 
 
 import lombok.*;
-import ru.mkhalikov.warehouse.goods_accounting.model.document.goods.ReceivedGoods;
-import ru.mkhalikov.warehouse.goods_accounting.model.Warehouse;
+import ru.mkhalikov.warehouse.goods_accounting.model.BaseEntity;
+import ru.mkhalikov.warehouse.goods_accounting.model.WarehouseEntity;
+import ru.mkhalikov.warehouse.goods_accounting.model.document.goods.ReceivedGoodsEntity;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -18,9 +19,11 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReceiptDocument {
+public class ReceiptDocument extends BaseEntity<Integer> {
+
     @Id
     @SequenceGenerator(name = "receipt_document_seq", sequenceName = "goods_accounting.receipt_document_seq", allocationSize = 1)
+    @GeneratedValue(generator = "receipt_document_seq")
     @Column(name = "id")
     private Integer id;
 
@@ -29,9 +32,9 @@ public class ReceiptDocument {
 
     @ManyToOne
     @JoinColumn(name = "destination_warehouse_id", foreignKey = @ForeignKey(name = "fk_receipt_document_destination_warehouse_id"))
-    private Warehouse destinationWarehouse;
+    private WarehouseEntity destinationWarehouse;
 
     @OneToMany(mappedBy = "receiptDocument")
-    private Set<ReceivedGoods> receivedGoods;
+    private Set<ReceivedGoodsEntity> receivedGoodEntities;
 
 }
