@@ -1,6 +1,7 @@
 package ru.mkhalikov.warehouse.goods_accounting.model.document.goods;
 
 import lombok.*;
+import ru.mkhalikov.warehouse.goods_accounting.model.BaseEntity;
 import ru.mkhalikov.warehouse.goods_accounting.model.document.MovementDocumentEntity;
 
 import javax.persistence.*;
@@ -9,13 +10,13 @@ import javax.persistence.*;
  * Перемещенные товары
  */
 @Entity
-@Table(name = "moved_goods")
+@Table(schema = "goods_accounting", name = "moved_goods")
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MovedGoodsEntity {
+public class MovedGoodsEntity extends BaseEntity<Integer> {
 
     @Id
     @SequenceGenerator(name = "moved_goods_seq", sequenceName = "goods_accounting.moved_goods_seq", allocationSize = 1)

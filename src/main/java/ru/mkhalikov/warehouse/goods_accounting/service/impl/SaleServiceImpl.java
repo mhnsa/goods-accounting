@@ -25,6 +25,9 @@ public class SaleServiceImpl implements SaleService {
     private final WarehouseService warehouseService;
     private final ProductRepository productRepository;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public void processSale(SaleDocumentRequestDTO saleDocumentRequestDTO) {

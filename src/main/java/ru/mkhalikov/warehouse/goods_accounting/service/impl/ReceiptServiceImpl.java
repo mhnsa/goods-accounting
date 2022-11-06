@@ -24,6 +24,9 @@ public class ReceiptServiceImpl implements ReceiptService {
     private final WarehouseService warehouseService;
     private final ProductRepository productRepository;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public void processReceipt(ReceiptDocumentRequestDTO receiptDocumentRequestDTO) {

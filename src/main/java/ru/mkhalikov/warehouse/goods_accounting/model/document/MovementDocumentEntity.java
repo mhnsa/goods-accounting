@@ -13,7 +13,7 @@ import java.util.Set;
  * Документ о перемещении товаров
  */
 @Entity
-@Table(name = "movement_document")
+@Table(schema = "goods_accounting", name = "movement_document")
 @Getter
 @Setter
 @Builder
@@ -38,6 +38,6 @@ public class MovementDocumentEntity extends BaseEntity<Integer> {
     @JoinColumn(name = "destination_warehouse_id", foreignKey = @ForeignKey(name = "fk_movement_document_destination_warehouse_id"))
     private WarehouseEntity destinationWarehouse;
 
-    @OneToMany(mappedBy = "movementDocument")
+    @OneToMany(mappedBy = "movementDocument", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<MovedGoodsEntity> movedGoods;
 }
